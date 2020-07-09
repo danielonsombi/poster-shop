@@ -1,0 +1,13 @@
+body {
+    margin: 1rem;
+    font-size: 30px;
+}
+
+li {
+    cursor: pointer;
+}
+
+.bought {
+    text-decoration:  line-through;
+    opacity:  0.3;
+}

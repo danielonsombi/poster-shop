@@ -1,0 +1,26 @@
+/********** VUE ECOSYSTEM *************
+*
+* Vue Router
+* Vuex
+* Vue CLI
+* Vue Devtools
+* Vue Test Utils
+*
+****** Vue's Benefits
+*
+* Focus
+* Small API
+* Fast and Light Weight
+* Versatility
+* Excellent docs
+* Made to be easy
+*
+***** Used by:
+* Alibaba
+* Adobe
+* IBM
+* NASA
+* Nitendo
+* Trivago
+*
+*/

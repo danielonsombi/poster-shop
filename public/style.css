@@ -366,3 +366,47 @@ body {
         display: none;
     }
 }
+
+
+/* Fade Transition */
+/*The fade-enter class format is added to an element right before the transition
+starts.*/
+
+.fade-enter {
+    opacity: 0;
+}
+
+/* We then add the fade-enter-active to specify theat the opacity will have to
+transition over a specified amount of time.*/
+.fade-enter-active {
+    transition: opacity 0.5s;
+}
+
+/*fade-enter-to is applied at the end of the transition though it must not be
+set since the default opacity is 1.
+
+.fade-enter-to {
+    opacity: 1;
+}
+*/
+/* Shows an empty template till the server returns the web app */
+/* [v-cloak] {
+    display: none !important;
+} */
+
+
+/* Instead of us hiding the entire page, we can instead hide the children of the
+v-cloak and do away with the important property to enable use override this
+rule to display just the loading div.*/
+[v-cloak] > * {
+    display: none;
+} 
+
+[v-cloak]> #loading {
+    display: block;
+    padding: 1em;
+}
+
+#loading {
+    display: none;
+}

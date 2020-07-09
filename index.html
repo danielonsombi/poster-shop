@@ -11,30 +11,129 @@
     <link rel="stylesheet" type="text/css" href="/public/style.css">
 </head>
 <body>
-<div id="app">
+<div id="app" v-cloak>
+    <div id="loading">Loading...</div>
     <div class="header">
         <div class="container">
             <div class="title">
                 <img src="public/logo.png">
                 <h1>Vue.js Poster Shop</h1>
             </div>
+            <form class="search-bar" v-on:submit.prevent="onSubmit">
+                <input type="text" placeholder="Search for posters" required v-model="search">
+                <input type="submit" value="Search" class="btn">
+            </form>
+            <p>Try Search Terms cat, dog, flower</p>
         </div>
     </div>
     <div class="main container">
         <div class="products">
-            <p>Products go here.</p>
+            <div v-if="loading">
+                Loading...
+            </div>
+            <div class="search-results" v-else>
+                Found {{ results.length }} results for search term <em>{{ lastSearch }}</em>
+            </div>
+            <!-- We can then render the products inside our DOM using the v-for
+            which takes in an alias that will be used to iterate through
+            individual members then use the in key word to refer to the array to
+            be iterated. Then use the alias to refer to the current object.
+            Since we gave the property a title we can use it here.  
+
+            In case one wants to remove an element from the array, then vue
+            tries to figure out which element was targeted and on re-rendering
+            the data, it might disorient the data. It is therefore good practice
+            to provide each item in the array with a unique id and binding it to
+            a property called key. This ensures our rendering is always perfect.
+            The key must be bound using the v-bind directive or else it will be
+            read as a string.
+        -->
+            <div v-for="product in products" class="product" v-bind:key="product.id">
+                <div class="product-image">
+                    <img :src="product.thumb" :alt="product.title">
+                </div>
+                <div>
+                    <h4 class="product-title">{{ product.title}}</h4>
+                    
+                    <p class="product-price"><strong> {{ product.price | currency }}</strong></strong></p>
+                    <!-- When a button is clicked on a page, a click event is being
+                        emitted in the DOM and we can have vue respond to it by having the
+                        v-on directive which is used for event handling.  
+                        This will increament the total data property and thus illustrating
+                        the reactivity in vue.  
+
+                        But it is not good to have too much JS logic in the template and
+                        thus the expression bellow is changed to instead call a method.
+                        <button v-on:click="total += 9.99">Add to Cart</button>. Then create
+                        a methods section in our script files and include it there..
+
+                    -->
+                    <button v-on:click="addToCart(product)" class="add-to-cart btn">Add to Cart</button>
+                </div> 
+            </div>
+            <!-- Add the senser element at the bottom-->
+            <div id="product-list-bottom">
+                <div v-if = "products.length === results.length && results.length > 0">No More Items.</div>
+            </div>
         </div>
         <div class="cart">
             <h2>Shopping Cart</h2>
-            <div>
-                Total: $0.00
+            <div v-if="cart.length === 0">
+                No item in the cart.
             </div>
+            <!-- Then we work on displaying our products in the cart.-->
+            <!--<ul>-->
+            <transition-group tag="ul" name="fade">    
+                <li v-for="item in cart" :key="item.id" class="cart-item">
+                    <div class="item-title"> {{ item.title }}</div>
+
+                    <!-- When one selects the same item more than ones, it
+                    should not increase the number of the items in the cart but
+                    rather the quantity of the items in the cart on the same
+                    product/item.-->
+                    <span class="item-qty"> {{ item.price | currency}} * {{item.qty}}</span>
+                    
+                    <!--  We then have to create two methods that will be
+                    listening to the click events of the btns below.-->
+                    <button class="btn" v-on:click="inc(item)">+</button>
+                    <button class="btn" v-on:click="dec(item)">-</button>
+                </li>
+            </transition-group>
+            <!--</ul> -->
+            <!-- Since our totals have a v-if wrapping around it we can have a
+            transition on this elements. This also works on v-for elements. The
+            transition element is not actually rendered to the DOM.  It only
+            tells vue where to apply a transition but in the rendered page it is
+            not actually there and this is very key when rendering the
+            transaction groups.-->
+            <transition name="fade">
+                <div v-if="cart.length">   
+                    <!--- When some javascript value is being rendered to a page
+                      that is what is referred to as an interpollation.--->
+                    <div class="cart-total">Total: {{ total | currency }}</div>
+                </div>            
+            </transition>
+            <!-- Instead of using the v-else, we will use v-if to check if the
+            cart.length is zero
+            <div v-else class="empty-cart"> 
+            Then we find CSS rules that make the elements opacity go from zero to 1 
+            and from the docs, these are the v-enter, v-enter-active and v-enter-to 
+            we then create them in the CSS. Move this code above the transion object 
+            to prevent it from the jumping around whild the elements are fading in 
+            and out.
+            <div v-if="cart.length === 0">
+                No item in the cart.
+            </div>
+            -->
         </div>
-    </div>
+    </div> 
 </div>
 
 <!-- Scripts -->
 <script src="/reload/reload.js"></script>
+<script type="text/javascript" src="node_modules/vue/dist/vue.js"></script>
+<script src="node_modules/vue-resource/dist/vue-resource.js"></script>
+<script src="node_modules/scrollmonitor/scrollmonitor.js"></script>
 <script type="text/javascript" src="public/script.js"></script>
 
 </body>

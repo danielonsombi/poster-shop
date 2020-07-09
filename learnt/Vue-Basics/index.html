@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue.js Example</title>
+    <link rel="stylesheet" href="style.css"/>
+    <script type="text/javascript" src="https://unpkg.com/vue/dist/vue.js"></script>
+</head>
+<body>
+    <!-- We first create a div (id = app) in the body of the page. The element
+    will be the root of our vue apps template. It is here where we can figure
+    out and view out the properties to a configuration object that we pass to a view constructor --->
+ 
+    <div id="app">
+        <!-- This is a list of Groceries: {{ groceries  }}  Instead of
+        displaying this way we can use directives to display the array of
+        groceries in a list format as below:-->
+        <h1>List of Groceries:</h1>
+        <ul>
+            <li v-for="grocery in groceries">{{ grocery }}</li>
+        </ul>
+
+        <!-- We can also have a text interpolation and an input tag as is below
+        which we can use to illustrate the reactivity in VUE. -->
+        {{ message }}
+        <br/>
+        <!-- Using the v-model directive we can link the input tag to the same
+        message data property. If we change the input then the data property
+        will also be changed. This is the ower of reactivity.-->
+        <input type = "text" v-model="message"></input>
+
+        <p></p>
+
+        <ul>
+            <!-- The custom component has a title property passed into it by the
+            teplate interface. This property is to be received in the custom
+            component as a prop: -->
+            <grocery-item title="Bread"></grocery-item>
+            <grocery-item title="Milk"></grocery-item>
+        </ul>
+    </div>
+
+
+    <scripT type="text/javascript" src="app.js"></script>
+</body> 
+</html>   
